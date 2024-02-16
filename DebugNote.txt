@@ -1,0 +1,4 @@
+We need to put full directory of docked file in venus drive in the filename string to let fopen work in Venus website
+EX:
+.data
+msg0: .asciiz "fa20-proj2-starter/inputs/test_read_matrix/test_input.bin"

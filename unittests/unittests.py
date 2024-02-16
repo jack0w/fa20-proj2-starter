@@ -319,20 +319,57 @@ class TestReadMatrix(TestCase):
         cols = t.array([-1])
 
         # load the addresses to the output parameters into the argument registers
-        raise NotImplementedError("TODO")
-        # TODO
+        t.input_array("a1", rows)
+        t.input_array("a2", cols)
 
         # call the read_matrix function
         t.call("read_matrix")
 
         # check the output from the function
-        # TODO
+        t.check_array(rows, [3])
+        t.check_array(cols, [3])
+        t.check_array_pointer("a0", [1, 2, 3, 4, 5, 6, 7, 8, 9])
 
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
 
     def test_simple(self):
         self.do_read_matrix()
+        self.do_read_matrix(fail='fopen', code = 90)
+        self.do_read_matrix(fail='malloc', code = 88)
+        self.do_read_matrix(fail='fread', code = 91)
+        self.do_read_matrix(fail='fclose', code = 92)
+    
+    def do_read_matrix_2(self, fail='', code=0):
+        t = AssemblyTest(self, "read_matrix.s")
+        # load address to the name of the input file into register a0
+        t.input_read_filename("a0", "inputs/test_read_matrix/m1.bin")
+
+        # allocate space to hold the rows and cols output parameters
+        rows = t.array([-1])
+        cols = t.array([-1])
+
+        # load the addresses to the output parameters into the argument registers
+        t.input_array("a1", rows)
+        t.input_array("a2", cols)
+
+        # call the read_matrix function
+        t.call("read_matrix")
+
+        # check the output from the function
+        t.check_array(rows, [5])
+        t.check_array(cols, [3])
+        t.check_array_pointer("a0", [1, -3, 4, 46, -2, -5, 2, -62, 0, 1, 3, 13, 26, -7, 34])
+
+        # generate assembly and run it through venus
+        t.execute(fail=fail, code=code)
+        
+    def test_simple_2(self):
+        self.do_read_matrix_2()
+        self.do_read_matrix_2(fail='fopen', code = 90)
+        self.do_read_matrix_2(fail='malloc', code = 88)
+        self.do_read_matrix_2(fail='fread', code = 91)
+        self.do_read_matrix_2(fail='fclose', code = 92)
 
     @classmethod
     def tearDownClass(cls):
@@ -341,23 +378,45 @@ class TestReadMatrix(TestCase):
 
 class TestWriteMatrix(TestCase):
 
-    def do_write_matrix(self, fail='', code=0):
+    def do_write_matrix(self, outfile, array0, rows, cols, reference, fail='', code=0):
         t = AssemblyTest(self, "write_matrix.s")
-        outfile = "outputs/test_write_matrix/student.bin"
         # load output file name into a0 register
         t.input_write_filename("a0", outfile)
         # load input array and other arguments
-        raise NotImplementedError("TODO")
-        # TODO
+        array0 = t.array(array0)
+        t.input_array("a1", array0)
+        t.input_scalar("a2", rows)
+        t.input_scalar("a3", cols)
         # call `write_matrix` function
         t.call("write_matrix")
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
         # compare the output file against the reference
-        t.check_file_output(outfile, "outputs/test_write_matrix/reference.bin")
+        if (fail == ''):
+            t.check_file_output(outfile, reference)
+        	
 
     def test_simple(self):
-        self.do_write_matrix()
+        outfileName = "outputs/test_write_matrix/student.bin"
+        arrayVal = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        rowVal = 3
+        colVal = 3
+        referenceName = "outputs/test_write_matrix/reference.bin"
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName)
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName, fail='fopen', code=93)
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName, fail="fwrite", code=94)
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName, fail="fclose", code=95)
+        
+    def test_custom(self):
+        outfileName = "outputs/test_write_matrix/student_m1.bin"
+        arrayVal = [1, -3, 4, 46, -2, -5, 2, -62, 0, 1, 3, 13, 26, -7, 34]
+        rowVal = 5
+        colVal = 3
+        referenceName = "outputs/test_write_matrix/reference_m1.bin"
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName)
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName, fail='fopen', code=93)
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName, fail="fwrite", code=94)
+        self.do_write_matrix(outfileName, arrayVal, rowVal, colVal, referenceName, fail="fclose", code=95)
 
     @classmethod
     def tearDownClass(cls):

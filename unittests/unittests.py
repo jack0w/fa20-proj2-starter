@@ -442,14 +442,13 @@ class TestClassify(TestCase):
         args = ["inputs/simple0/bin/m0.bin", "inputs/simple0/bin/m1.bin",
                 "inputs/simple0/bin/inputs/input0.bin", out_file]
         # call classify function
+        t.input_scalar("a0", 5)
+        t.input_scalar("a2", 0)
         t.call("classify")
         # generate assembly and pass program arguments directly to venus
         t.execute(args=args)
-
-        # compare the output file and
-        raise NotImplementedError("TODO")
-        # TODO
-        # compare the classification output with `check_stdout`
+        t.check_file_output(out_file, ref_file)
+        t.check_scalar("a0", 2)
 
     @classmethod
     def tearDownClass(cls):
@@ -473,3 +472,4 @@ class TestMain(TestCase):
 
     def test1(self):
         self.run_main("inputs/simple1/bin", "1", "1")
+        

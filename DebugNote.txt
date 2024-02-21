@@ -2,3 +2,8 @@ We need to put full directory of docked file in venus drive in the filename stri
 EX:
 .data
 msg0: .asciiz "fa20-proj2-starter/inputs/test_read_matrix/test_input.bin"
+
+
+Venus run command:
+java -jar tools/venus.jar --memcheckVerbose src/main.s -ms -1 inputs/simple0/bin/m0.bin inputs/simple0/bin/m1.bin inputs/simple0/bin/inputs/input0.bin outputs/test_basic_main/student_basic_output.bin
+We can replace --memcheckVerbose with --memcheck

@@ -7,3 +7,41 @@ msg0: .asciiz "fa20-proj2-starter/inputs/test_read_matrix/test_input.bin"
 Venus run command:
 java -jar tools/venus.jar --memcheckVerbose src/main.s -ms -1 inputs/simple0/bin/m0.bin inputs/simple0/bin/m1.bin inputs/simple0/bin/inputs/input0.bin outputs/test_basic_main/student_basic_output.bin
 We can replace --memcheckVerbose with --memcheck
+
+
+MNIST Check:
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input0.bin outputs/test_mnist_main/student_mnist_outputs0.bin
+return: 6
+reference: 6
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input1.bin outputs/test_mnist_main/student_mnist_outputs1.bin
+return: 9
+reference: 9
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input2.bin outputs/test_mnist_main/student_mnist_outputs2.bin
+return: 9
+reference: 9 (The real label is 7. Mnist won't do perfect classification)
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input3.bin outputs/test_mnist_main/student_mnist_outputs3.bin
+return: 2
+reference: 2
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input4.bin outputs/test_mnist_main/student_mnist_outputs4.bin
+return: 9
+reference: 9
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input5.bin outputs/test_mnist_main/student_mnist_outputs5.bin
+return: 4
+reference: 4
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input6.bin outputs/test_mnist_main/student_mnist_outputs6.bin
+return: 4
+reference: 4
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input7.bin outputs/test_mnist_main/student_mnist_outputs7.bin
+return: 8
+reference: 8 (The real label is 2. Mnist won't do perfect classification)
+
+java -jar tools/venus.jar src/main.s -ms -1 inputs/mnist/bin/m0.bin inputs/mnist/bin/m1.bin inputs/mnist/bin/inputs/mnist_input8.bin outputs/test_mnist_main/student_mnist_outputs8.bin
+return: 7
+reference: 7
